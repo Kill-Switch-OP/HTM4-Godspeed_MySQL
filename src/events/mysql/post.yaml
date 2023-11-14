@@ -1,0 +1,106 @@
+# GET a Post by ID
+GET /mysql/post/{id}:
+  summary: Fetch Post by ID
+  description: Fetch Post from MySQL database by ID
+  sql: SELECT * FROM posts WHERE id = :id;
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    200:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+
+# CREATE a new Post
+POST /mysql/post:
+  summary: Create a new Post
+  description: Create Post in MySQL database
+  sql: INSERT INTO posts (title, content) VALUES (:title, :content);
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+            content:
+              type: string
+  responses:
+    201:
+      description: Post created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+
+# UPDATE a Post by ID
+PUT /mysql/post/{id}:
+  summary: Update a Post by ID
+  description: Update Post in MySQL database by ID
+  sql: UPDATE posts SET title = :title, content = :content WHERE id = :id;
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+            content:
+              type: string
+  responses:
+    200:
+      description: Post updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+
+# DELETE a Post by ID
+DELETE /mysql/post/{id}:
+  summary: Delete a Post by ID
+  description: Delete Post from MySQL database by ID
+  sql: DELETE FROM posts WHERE id = :id;
+  params:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    204:
+      description: Post deleted successfully
+
+# SEARCH for Posts by title
+POST /mysql/post/search:
+  summary: Search for Posts by title
+  description: Search for Posts in MySQL database by title
+  sql: SELECT * FROM posts WHERE title LIKE :title;
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            title:
+              type: string
+  responses:
+    200:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: array
